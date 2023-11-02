@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="ru"><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Подбор транспорта</title>
+    <link rel="stylesheet" href="nicepage.css" >
+    <link rel="stylesheet" href="Главная.css" >
+    <script class="u-script" type="text/javascript" src="static/jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="static/nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 5.18.5, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='Главная.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nicepage.css') }}">
+
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "",
+		"logo": "static/images/00c3d226e6adbd053e755d98ed10fbb7.jpg"
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Подбор транспорта">
+    <meta property="og:type" content="website">
+  <meta data-intl-tel-input-cdn-path="intlTelInput/">
+
+</head>
+  <body data-path-to-root="./" class="u-body u-xl-mode" data-lang="ru"><header class="u-clearfix u-custom-color-1 u-header u-header" id="sec-22b2"><div class="u-clearfix u-sheet u-sheet-1">
+        <a href="https://nicepage.com" class="u-image u-logo u-image-1" data-image-width="1000" data-image-height="1000">
+          <img src="static/images/00c3d226e6adbd053e755d98ed10fbb7.jpg" class="u-logo-image u-logo-image-1">
+        </a>
+        <nav class="u-menu u-menu-one-level u-offcanvas u-menu-1">
+          <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px;">
+            <a class="u-button-style u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="#">
+              <svg class="u-svg-link" viewBox="0 0 24 24"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use></svg>
+              <svg class="u-svg-content" version="1.1" id="menu-hamburger" viewBox="0 0 16 16" x="0px" y="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g><rect y="1" width="16" height="2"></rect><rect y="7" width="16" height="2"></rect><rect y="13" width="16" height="2"></rect>
+</g></svg>
+            </a>
+          </div>
+          <div class="u-custom-menu u-nav-container">
+            <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="Главная.html" style="padding: 10px 20px;">Главная</a>
+</li></ul>
+          </div>
+          <div class="u-custom-menu u-nav-container-collapse">
+            <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+              <div class="u-inner-container-layout u-sidenav-overflow">
+                <div class="u-menu-close"></div>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="templates/Подбор транспорта.html">Подбор транспорта</a>
+</li></ul>
+              </div>
+            </div>
+            <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
+          </div>
+        </nav>
+      </div></header>
+
+    <section class="u-clearfix u-gradient u-section-1" id="sec-25d3">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <div class="u-form u-gradient u-login-control u-form-1">
+
+<section class="u-clearfix u-section-2" id="sec-cc7f">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-expanded-width u-table u-table-responsive u-table-1">
+          <table class="u-table-entity">
+            <colgroup>
+              <col width="8.5%">
+              <col width="6%">
+              <col width="9%">
+              <col width="25%">
+            </colgroup>
+            <tbody class="u-table-body">
+              <tr style="height: 10px;">
+<td><p>{{Depart}}</p></td>
+
+<td><p>{{Destination}}</p></td>
+<td><p>{{Date_Dep}}</p></td>
+<td><p>{{Date_Dest}}</p></td>
+</tr>
+
+{%for index in range(peresadok+1) %} 
+
+<tr>
+<section class="u-clearfix u-section-2" id="sec-cc7f">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-expanded-width u-table u-table-responsive u-table-1">
+          <table class="u-table-entity">
+            <colgroup>
+              <col width="8.5%">
+              <col width="6%">
+              <col width="9%">
+              <col width="5%">
+            </colgroup>
+            <tbody class="u-table-body">
+<tr >
+<td>{{info[index][0]}}</td>
+<td>{{info[index][1]}}</td>
+<td>{{info[index][2]}}</td>
+<td>{{info[index][5]}}</td>
+</tr>
+<tr>
+<td></td>
+<td>{{info[index][3]}}</td>
+<td>{{info[index][4]}}</td>
+<td>{{info[index][6]}}</td>
+</tr>
+</tbody>
+</table>
+</tr>
+<tr>{{Peresadki[index][0]}}{{Peresadki[index][1]}}</tr>
+{%endfor%}
+
+        	
+
+
+
+</tbody>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+</body></html>
