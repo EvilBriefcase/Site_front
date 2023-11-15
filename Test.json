@@ -1,0 +1,271 @@
+{
+  "cities": [
+    {
+      "id": 29,
+      "cityName": "Родники"
+    },
+    {
+      "id": 30,
+      "cityName": "Сертолово"
+    },
+    {
+      "id": 31,
+      "cityName": "Черногорск"
+    },
+    {
+      "id": 32,
+      "cityName": "Наволоки"
+    },
+    {
+      "id": 33,
+      "cityName": "Саратов"
+    },
+    {
+      "id": 34,
+      "cityName": "Чайковский"
+    },
+    {
+      "id": 35,
+      "cityName": "Краснодар"
+    },
+    {
+      "id": 36,
+      "cityName": "Амурск"
+    },
+    {
+      "id": 37,
+      "cityName": "Алзамай"
+    },
+    {
+      "id": 38,
+      "cityName": "Батайск"
+    }
+  ],
+  "departures": [
+    {
+      "id": "ec63e45b-41fe-4844-b06a-450b7dc9afc0",
+      "transportType": "BUS",
+      "departureDate": "2024-04-25T19:43:24.0185477",
+      "travelTime": 486,
+      "price": 7518,
+      "departureCity": 30,
+      "arrivalCity": 34
+    },
+    {
+      "id": "0e2e535e-8944-4a18-ab55-fba3ee4bde94",
+      "transportType": "BUS",
+      "departureDate": "2024-02-03T15:43:24.0205734",
+      "travelTime": 473,
+      "price": 9681,
+      "departureCity": 30,
+      "arrivalCity": 35
+    },
+    {
+      "id": "0ceb918f-141a-4a38-bdd6-415ec1c0032c",
+      "transportType": "PLANE",
+      "departureDate": "2024-05-30T00:43:24.0225729",
+      "travelTime": 581,
+      "price": 1254,
+      "departureCity": 29,
+      "arrivalCity": 32
+    },
+    {
+      "id": "5ca28771-ef97-4dd2-9540-851b28176d77",
+      "transportType": "BUS",
+      "departureDate": "2024-04-27T06:43:24.0255841",
+      "travelTime": 154,
+      "price": 3349,
+      "departureCity": 35,
+      "arrivalCity": 31
+    },
+    {
+      "id": "fb133c74-601b-42bd-a58a-f7b3b1b4e52c",
+      "transportType": "PLANE",
+      "departureDate": "2024-07-14T13:43:24.0276702",
+      "travelTime": 449,
+      "price": 9116,
+      "departureCity": 36,
+      "arrivalCity": 37
+    },
+    {
+      "id": "1b915d6f-96ea-472c-b805-c91092f97394",
+      "transportType": "PLANE",
+      "departureDate": "2024-01-12T18:43:24.0296943",
+      "travelTime": 320,
+      "price": 4134,
+      "departureCity": 30,
+      "arrivalCity": 33
+    },
+    {
+      "id": "47bf0c4a-c476-4049-9d3b-2b57b89f318c",
+      "transportType": "BUS",
+      "departureDate": "2024-03-29T00:43:24.0316942",
+      "travelTime": 366,
+      "price": 4937,
+      "departureCity": 33,
+      "arrivalCity": 32
+    },
+    {
+      "id": "36618a23-82b0-43ef-b66d-33136caf4f86",
+      "transportType": "TRAIN",
+      "departureDate": "2024-11-03T14:43:24.0337205",
+      "travelTime": 609,
+      "price": 7871,
+      "departureCity": 30,
+      "arrivalCity": 36
+    },
+    {
+      "id": "bfc857b2-b441-40fd-963f-e182d12a21f1",
+      "transportType": "PLANE",
+      "departureDate": "2024-09-25T09:43:24.03547",
+      "travelTime": 371,
+      "price": 6003,
+      "departureCity": 38,
+      "arrivalCity": 38
+    },
+    {
+      "id": "150cda72-2b9f-4700-a537-d2216fefe5b3",
+      "transportType": "TRAIN",
+      "departureDate": "2023-12-09T20:43:24.0374997",
+      "travelTime": 358,
+      "price": 9945,
+      "departureCity": 37,
+      "arrivalCity": 38
+    },
+    {
+      "id": "9e2ace70-3dbb-49b6-8f69-9c83a8989749",
+      "transportType": "BUS",
+      "departureDate": "2024-09-09T17:43:24.040127",
+      "travelTime": 531,
+      "price": 666,
+      "departureCity": 30,
+      "arrivalCity": 33
+    },
+    {
+      "id": "459374e2-1db0-4aee-ace3-b850d062e7f1",
+      "transportType": "TRAIN",
+      "departureDate": "2024-09-14T04:43:24.0421449",
+      "travelTime": 573,
+      "price": 2864,
+      "departureCity": 34,
+      "arrivalCity": 37
+    },
+    {
+      "id": "d374dcba-5e6f-488e-92ae-340299d32370",
+      "transportType": "PLANE",
+      "departureDate": "2024-02-24T17:43:24.0441447",
+      "travelTime": 284,
+      "price": 446,
+      "departureCity": 31,
+      "arrivalCity": 36
+    },
+    {
+      "id": "022ae2a0-4a36-449b-aa9e-7e44bfa0fcc5",
+      "transportType": "PLANE",
+      "departureDate": "2024-06-08T06:43:24.0461551",
+      "travelTime": 165,
+      "price": 9382,
+      "departureCity": 34,
+      "arrivalCity": 31
+    },
+    {
+      "id": "d54fa6ec-9d8f-4441-89ae-62f14cc34081",
+      "transportType": "TRAIN",
+      "departureDate": "2024-11-05T12:43:24.0481481",
+      "travelTime": 66,
+      "price": 7766,
+      "departureCity": 37,
+      "arrivalCity": 29
+    },
+    {
+      "id": "ff5d55dd-84c1-49f6-bca2-cc5d66bdc6e2",
+      "transportType": "BUS",
+      "departureDate": "2024-02-03T11:43:24.0504191",
+      "travelTime": 112,
+      "price": 2604,
+      "departureCity": 30,
+      "arrivalCity": 33
+    },
+    {
+      "id": "3fbf3265-11aa-42c7-a9b7-90ab6be79174",
+      "transportType": "PLANE",
+      "departureDate": "2024-02-05T14:43:24.0524438",
+      "travelTime": 371,
+      "price": 5174,
+      "departureCity": 38,
+      "arrivalCity": 30
+    },
+    {
+      "id": "f0dfff51-2fcf-4183-9cf7-718fa5b7ea41",
+      "transportType": "TRAIN",
+      "departureDate": "2024-07-17T01:43:24.0549702",
+      "travelTime": 293,
+      "price": 5831,
+      "departureCity": 31,
+      "arrivalCity": 29
+    },
+    {
+      "id": "95f73926-4a05-497c-9201-b6fc8aeac6a0",
+      "transportType": "TRAIN",
+      "departureDate": "2024-10-02T11:43:24.0569691",
+      "travelTime": 15,
+      "price": 5048,
+      "departureCity": 29,
+      "arrivalCity": 29
+    },
+    {
+      "id": "8e0ab788-7dc6-4ba5-8fa0-461926768de1",
+      "transportType": "TRAIN",
+      "departureDate": "2024-08-22T17:43:24.0599693",
+      "travelTime": 646,
+      "price": 8735,
+      "departureCity": 34,
+      "arrivalCity": 31
+    },
+    {
+      "id": "ed5e0e4d-0990-4032-b7d7-15c749918fc3",
+      "transportType": "BUS",
+      "departureDate": "2024-03-11T14:43:24.0612326",
+      "travelTime": 453,
+      "price": 9603,
+      "departureCity": 31,
+      "arrivalCity": 31
+    },
+    {
+      "id": "ed32ec97-7bb4-4773-ad65-287db8ead543",
+      "transportType": "PLANE",
+      "departureDate": "2024-11-09T10:43:24.0632484",
+      "travelTime": 360,
+      "price": 7221,
+      "departureCity": 29,
+      "arrivalCity": 33
+    },
+    {
+      "id": "aacb6319-7148-4853-b91a-bddfe0fc3605",
+      "transportType": "BUS",
+      "departureDate": "2024-04-30T14:43:24.065248",
+      "travelTime": 499,
+      "price": 4239,
+      "departureCity": 36,
+      "arrivalCity": 32
+    },
+    {
+      "id": "e59bd415-9497-4a66-aa45-2a51ae47feed",
+      "transportType": "TRAIN",
+      "departureDate": "2024-06-28T00:43:24.0677434",
+      "travelTime": 254,
+      "price": 33,
+      "departureCity": 38,
+      "arrivalCity": 38
+    },
+    {
+      "id": "198b7ef6-b8e6-4418-8b05-a2dd144e63db",
+      "transportType": "PLANE",
+      "departureDate": "2024-05-14T15:43:24.0697402",
+      "travelTime": 97,
+      "price": 4085,
+      "departureCity": 33,
+      "arrivalCity": 35
+    }
+  ]
+}

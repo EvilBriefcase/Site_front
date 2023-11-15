@@ -2,61 +2,69 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 import psycopg2
 import numpy
 from datetime import datetime
-
+import json
 
 
 app = Flask(__name__)
+conn=psycopg2.connect(database="postgres", user="postgres", password="1234", host="localhost", port=5432) #Вход в БД
+#json_File_read="чтото.json" #имя файла в формате json
 
+
+#cities=[["Москва", "Москва"],["Омск", "Омск"],["Нижний Новгород", "Нижний Новгород"],]
+
+cities=[]
+
+def JSON_reading():
+    with open("Test.json", "r", encoding='utf-8') as file:
+        capitals_json = file.read()
+    book = json.loads(capitals_json)  # Превращение jsona  в словарь
+    cities_json = book["cities"]
+    counter = 0
+    for rows in cities_json:
+        buffer = cities_json[counter]["cityName"];
+        cities.append(buffer)
+        counter = counter + 1
+    one_row=[]
+    return counter
 
 
 def Table_info():
     global Info
-    global Peresadki
-    Peresadki = [['', ''], ['', '']]
-    Info = [['', '', '', '', '', '', ''], ['', '', '', '', '', '', ''], ['', '', '', '', '', '', '']]
-    Time=[['',''], ['',''],['','']]
+    global Peresadki #количество пересадок
+    global Number_of_Rows
 
-    transport_code='Поезд'
-    date_time_dep='23.09.2023'
-    dep_point='Москва'
-    date_time_dest='23.09.2023'
-    dest_point='Казань'
-    Number_of_Peresadki=1
-    #Ввод данных от пользователя + прогресс Notion, разделение по людям с
-    test="19:00:00"
-    #Первая таблица
-    Time[0][0]=datetime.strptime(test, "%H:%M:%S")
-    Time[0][1]=datetime.strptime("20:00:00", "%H:%M:%S")
-    Info[0][0] = transport_code
-    Info[0][1] = date_time_dep
-    Info[0][2] = dep_point
-    Info[0][3] = date_time_dest
-    Info[0][4] = dest_point
-    Info[0][5] = Time[0][0]
-    Info[0][6] = Time[0][1]
+    #Тестовая попытка в динамически двумерный массив с чтением из json
+    Full_Information=[] #пустой массив для  для всей информации
+    Info=[]
 
-    #Вторая таблица
-    Time[1][0]=datetime.strptime("20:30:00", "%H:%M:%S")
-    Time[1][1]=datetime.strptime("21:00:00", "%H:%M:%S")
-    Info[1][0] = "Самолет"
-    Info[1][1] = date_time_dep
-    Info[1][2] = "Казань"
-    Info[1][3] = date_time_dest
-    Info[1][4] = "Омск"
-    Info[1][5] = Time[1][0]
-    Info[1][6] = Time[1][1]
+    with open("Test.json", "r") as file:
+        capitals_json = file.read()
+    book = json.loads(capitals_json)  # Превращение jsona  в словарь
+    cities_json = book["departures"]
+    buffer =['','','','','','','','']
+    counter = 0
+    for rows in cities_json:
+        buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
+        buffer[1] = (cities_json[counter]["departureDate"]);#Дата
+        buffer[2] = cities_json[counter]["departureDate"]; #Дата прибытия через время в пути
+        buffer[3] = cities_json[counter]["departureDate"];#Время прибытия через время в пути
+        buffer[4] = cities_json[counter]["departureDate"];#
+        buffer[5] = cities_json[counter]["departureCity"];
+        buffer[6] = cities_json[counter]["arrivalCity"];
+        buffer[7] = cities_json[counter]["price"];
+        #print(buffer)
+        #print(counter)
+        Info.extend(buffer)
+        counter = counter + 1
+        Number_of_Rows = counter
+        #Сделать for на блоки с билетами(или найти)
+    #Конец попытки
+    Peresadki = ['1', '2', '1', '1']#Массив для хранения пересадок
 
-    #Третья таблицы
 
-    #Пересадки
-    if (Number_of_Peresadki ==1):
-        Peresadki[0][0]="Время на пересадку: "
-        Peresadki[0][1]=Time[1][0]-Time[0][1]
-    if (Number_of_Peresadki == 2):
-        Peresadki[1][0] = "Время на пересадку: "
-        Peresadki[1][1] = Time[2][0]-Time[1][1]
+   # cur = conn.cursor()
+   # cur.execute("SELECT date1 FROM Тестовая_таблица_расписания")
 
-    return Number_of_Peresadki
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
@@ -66,16 +74,15 @@ def hello():
         depart=request.form['depart']
         destination=request.form['destination']
         return redirect(url_for('res'))
-    return render_template('Главная.html')
+    JSON_reading()
+    return render_template('Главная.html', list_of_cities=cities, Cities=3)
 
 @app.route('/res', methods=['GET', 'POST'])
 def res():
 
     #Выбор из таблицы нужных строк
     Table_info()
-
-    return render_template('Подбор транспорта.html', Depart=depart, Destination=destination, info=Info, Peresadki=Peresadki, peresadok=1)
+    return render_template('Подбор транспорта.html', Depart=depart, Destination=destination, info=Info, Peresadki=Peresadki, Number=Number_of_Rows)
 if __name__ == '__main__':
     app.run()
 
-#    Time = Time, Date_Dep = '23.09.2023', Date_Dest = '23.09.2023', Transport = transport_code, Date_Time_Dep = date_time_dep, Dep_Point = dep_point, Date_Time_Dest = date_time_dest, Dest_Point = dest_point)

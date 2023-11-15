@@ -77,18 +77,16 @@
               <tr style="height: 31px;">
 <td>
                 <select name="depart">
-    <option value="Москва">Москва</option>
-    <option value="Казань">Казань</option>
-    <option value="Смоленск">Смоленск</option>
-    <option value="Омск">Омск</option>
+{%for i in range(Cities) %}
+ <option value={{list_of_cities[i]}}>{{list_of_cities[i]}}</option>
+{%endfor%}
     </select> </td>
 
                 <td>
                 <select name="destination">
- <option value="Москва">Москва</option>
-    <option value="Казань">Казань</option>
-    <option value="Смоленск">Смоленск</option>
-    <option value="Омск">Омск</option>
+{%for i in range(Cities) %}
+ <option value={{list_of_cities[i]}}>{{list_of_cities[i]}}</option>
+{%endfor%}
     </select> </td>
 
 <td>

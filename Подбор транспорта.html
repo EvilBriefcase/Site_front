@@ -79,7 +79,7 @@
 <td><p>{{Date_Dest}}</p></td>
 </tr>
 
-{%for index in range(peresadok+1) %} 
+{%for index in range(0,Number*8,8) %} 
 
 <tr>
 <section class="u-clearfix u-section-2" id="sec-cc7f">
@@ -94,21 +94,22 @@
             </colgroup>
             <tbody class="u-table-body">
 <tr >
-<td>{{info[index][0]}}</td>
-<td>{{info[index][1]}}</td>
-<td>{{info[index][2]}}</td>
-<td>{{info[index][5]}}</td>
+<td>Вид транспорта: {{info[index]}}</td>
+<td>Дата отбытия: {{info[index+1]}}</td>
+<td>Время отбытия: {{info[index+2]}}</td>
+<td>Город отбытия: {{info[index+5]}}</td>
 </tr>
 <tr>
 <td></td>
-<td>{{info[index][3]}}</td>
-<td>{{info[index][4]}}</td>
-<td>{{info[index][6]}}</td>
+<td>Дата прибытия: {{info[index+3]}}</td>
+<td>Время прибытия: {{info[index+4]}}</td>
+<td>Город прибытия: {{info[index+6]}}</td>
+<td>Стоимость билета: {{info[index+7]}} рублей</td>
 </tr>
 </tbody>
 </table>
 </tr>
-<tr>{{Peresadki[index][0]}}{{Peresadki[index][1]}}</tr>
+<tr>{{Peresadki[0][0]}}{{Peresadki[0][1]}}</tr>
 {%endfor%}
 
         	
