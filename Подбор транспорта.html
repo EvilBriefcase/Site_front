@@ -65,21 +65,27 @@
         <div class="u-expanded-width u-table u-table-responsive u-table-1">
           <table class="u-table-entity">
             <colgroup>
-              <col width="8.5%">
-              <col width="6%">
-              <col width="9%">
-              <col width="25%">
+              <col width="50%">
+              <col width="50%">
+
             </colgroup>
             <tbody class="u-table-body">
-              <tr style="height: 10px;">
+              <tr style="height: 10px; text-allign:left;">
 <td><p>{{Depart}}</p></td>
 
 <td><p>{{Destination}}</p></td>
-<td><p>{{Date_Dep}}</p></td>
-<td><p>{{Date_Dest}}</p></td>
+</tr>
+<tr>
+<td><p>{{Date_Dep}}12</p></td>
+<td><p>{{Date_Dest}}32</p></td>
 </tr>
 
-{%for index in range(0,Number*8,8) %} 
+
+
+
+
+
+{%for index in range(0,Number*9,9) %} 
 
 <tr>
 <section class="u-clearfix u-section-2" id="sec-cc7f">
@@ -87,10 +93,11 @@
         <div class="u-expanded-width u-table u-table-responsive u-table-1">
           <table class="u-table-entity">
             <colgroup>
-              <col width="8.5%">
-              <col width="6%">
-              <col width="9%">
-              <col width="5%">
+              <col width="20%">
+              <col width="20%">
+              <col width="20%">
+              <col width="20%">
+		<col width ="20">
             </colgroup>
             <tbody class="u-table-body">
 <tr >
@@ -106,6 +113,7 @@
 <td>Город прибытия: {{info[index+6]}}</td>
 <td>Стоимость билета: {{info[index+7]}} рублей</td>
 </tr>
+<tr><td>Время в пути</td><td>{{info[index+8]}}</td></tr>
 </tbody>
 </table>
 </tr>

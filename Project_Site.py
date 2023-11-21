@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 import psycopg2
 import numpy
-from datetime import datetime
+import datetime
 import json
 
 
@@ -12,58 +12,98 @@ conn=psycopg2.connect(database="postgres", user="postgres", password="1234", hos
 
 #cities=[["Москва", "Москва"],["Омск", "Омск"],["Нижний Новгород", "Нижний Новгород"],]
 
-cities=[]
+cities_name=[]
+cities_full=[]
 
-def JSON_reading():
-    with open("Test.json", "r", encoding='utf-8') as file:
-        capitals_json = file.read()
-    book = json.loads(capitals_json)  # Превращение jsona  в словарь
-    cities_json = book["cities"]
+#Открытие json со списком городов и его чтение
+with open("Test.json", "r", encoding='utf-8') as file:
+    capitals_json = file.read()
+book = json.loads(capitals_json)  # Превращение jsona  в словарь
+
+#Открытие json со списком билетов
+with open("Test.json", "r", encoding='utf-8') as file:
+    capitals_json = file.read()
+book = json.loads(capitals_json)  # Превращение jsona  в словарь
+
+
+
+def JSON_reading(): #Функция сохранения списка городов для выдачи выпадающим списком
+
+    cities_json = book["cities"] #
     counter = 0
     for rows in cities_json:
         buffer = cities_json[counter]["cityName"];
-        cities.append(buffer)
+        cities_name.append(buffer)
+        #тестовый вариант с id| город парой
+
+        buffer=cities_json[counter]
+        cities_full.extend(buffer)
         counter = counter + 1
-    one_row=[]
     return counter
 
+def ID_NAME(id, list):
+    i=0
+    while(id !=list[i]):
+        i=i+1
+    name=list[i]["cityName"]
+    return name
 
-def Table_info():
+def Minutes_To_DateTime():
+    cities_json = book["departures"]
+    TimeTravel=[]
+    counter=0
+    for rows in cities_json:
+        buffer = cities_json[counter]["travelTime"];
+        counter=counter+1
+        Hours = int(buffer / 60);  # Часы
+        Minutes = buffer % 60  # Минуты
+
+        time_str = str(Hours) + ':' + str(Minutes)#Превращение в строку формата %H:$M
+        buffer_date_time = datetime.datetime.strptime(str(time_str), "%H:%M");#Превращение в формат datetime
+        TimeTravel.append((buffer_date_time.time()))
+    return TimeTravel
+
+def Table_info(): #функция выборки и приведения информации к виду удобному для чтения пользователем на экране
     global Info
     global Peresadki #количество пересадок
     global Number_of_Rows
 
-    #Тестовая попытка в динамически двумерный массив с чтением из json
     Full_Information=[] #пустой массив для  для всей информации
     Info=[]
 
-    with open("Test.json", "r") as file:
-        capitals_json = file.read()
-    book = json.loads(capitals_json)  # Превращение jsona  в словарь
+
     cities_json = book["departures"]
-    buffer =['','','','','','','','']
+
+    buffer =['','','','','','','','', '']
+
+    TimeTravel=Minutes_To_DateTime(); #Время в дороге
+
     counter = 0
     for rows in cities_json:
         buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
-        buffer[1] = (cities_json[counter]["departureDate"]);#Дата
-        buffer[2] = cities_json[counter]["departureDate"]; #Дата прибытия через время в пути
+
+        buffer_date_time = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]), "%Y-%m-%dT%H:%M:%S");
+        #print(buffer_date_time)
+        buffer[1] =str( buffer_date_time.date())
+        buffer[2] = str(buffer_date_time.time()); #Дата прибытия через время в пути
+
         buffer[3] = cities_json[counter]["departureDate"];#Время прибытия через время в пути
         buffer[4] = cities_json[counter]["departureDate"];#
-        buffer[5] = cities_json[counter]["departureCity"];
+
+        buffer[5]=cities_json[counter]["departureCity"];
+        #buffer[5] = ID_NAME(cities_json[counter]["departureCity"], cities_full)
+
         buffer[6] = cities_json[counter]["arrivalCity"];
         buffer[7] = cities_json[counter]["price"];
-        #print(buffer)
-        #print(counter)
+
+        buffer[8]=TimeTravel[counter];
         Info.extend(buffer)
         counter = counter + 1
         Number_of_Rows = counter
         #Сделать for на блоки с билетами(или найти)
     #Конец попытки
     Peresadki = ['1', '2', '1', '1']#Массив для хранения пересадок
-
-
-   # cur = conn.cursor()
-   # cur.execute("SELECT date1 FROM Тестовая_таблица_расписания")
+    return
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -74,8 +114,8 @@ def hello():
         depart=request.form['depart']
         destination=request.form['destination']
         return redirect(url_for('res'))
-    JSON_reading()
-    return render_template('Главная.html', list_of_cities=cities, Cities=3)
+    number_of_cities=JSON_reading()
+    return render_template('Главная.html', list_of_cities=cities_name, Cities=number_of_cities)
 
 @app.route('/res', methods=['GET', 'POST'])
 def res():
