@@ -4,12 +4,13 @@ type="text/css" .u-section-1 {
 }
 
 .u-section-1 .u-sheet-1 {
-  min-height: 400px;
+
+min-widrh: 500px;
+width: 70%;
 }
 
 .u-section-1 .u-form-1 {
-  height: 291px;
-  width: 421px;
+ 
   background-image: linear-gradient(#f9e79b, #db545a);
   margin: 55px auto;
 }

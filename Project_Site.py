@@ -13,6 +13,7 @@ conn=psycopg2.connect(database="postgres", user="postgres", password="1234", hos
 #cities=[["Москва", "Москва"],["Омск", "Омск"],["Нижний Новгород", "Нижний Новгород"],]
 
 cities_name=[]
+cities_name_id=[] #Массив id_имя
 cities_full=[]
 
 #Открытие json со списком городов и его чтение
@@ -32,21 +33,27 @@ def JSON_reading(): #Функция сохранения списка город
     cities_json = book["cities"] #
     counter = 0
     for rows in cities_json:
+        # тестовый вариант с id| город парой
+        buffer = cities_json[counter]["id"];
+        cities_name_id.append(buffer)
+
         buffer = cities_json[counter]["cityName"];
         cities_name.append(buffer)
-        #тестовый вариант с id| город парой
+        cities_name_id.append(buffer)
 
         buffer=cities_json[counter]
         cities_full.extend(buffer)
         counter = counter + 1
     return counter
 
-def ID_NAME(id, list):
-    i=0
-    while(id !=list[i]):
-        i=i+1
-    name=list[i]["cityName"]
+def ID_NAME(id):
+    counter=0
+    while(cities_name_id[counter]!=id):
+        counter=counter+2;
+    name=cities_name_id[counter+1]
     return name
+
+
 
 def Minutes_To_DateTime():
     cities_json = book["departures"]
@@ -90,10 +97,10 @@ def Table_info(): #функция выборки и приведения инф�
         buffer[3] = cities_json[counter]["departureDate"];#Время прибытия через время в пути
         buffer[4] = cities_json[counter]["departureDate"];#
 
-        buffer[5]=cities_json[counter]["departureCity"];
-        #buffer[5] = ID_NAME(cities_json[counter]["departureCity"], cities_full)
+        #buffer[5]=cities_json[counter]["departureCity"];
+        buffer[5] = ID_NAME(int(cities_json[counter]["departureCity"]))
 
-        buffer[6] = cities_json[counter]["arrivalCity"];
+        buffer[6] = ID_NAME(int(cities_json[counter]["arrivalCity"]));
         buffer[7] = cities_json[counter]["price"];
 
         buffer[8]=TimeTravel[counter];
@@ -115,6 +122,7 @@ def hello():
         destination=request.form['destination']
         return redirect(url_for('res'))
     number_of_cities=JSON_reading()
+    print(ID_NAME(int(29)))
     return render_template('Главная.html', list_of_cities=cities_name, Cities=number_of_cities)
 
 @app.route('/res', methods=['GET', 'POST'])
