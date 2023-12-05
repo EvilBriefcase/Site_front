@@ -76,8 +76,8 @@
 <td><p>{{Destination}}</p></td>
 </tr>
 <tr>
-<td><p>{{Date_Dep}}12</p></td>
-<td><p>{{Date_Dest}}32</p></td>
+<td><p>{{Date_Dep}}</p></td>
+<td><p>{{Date_Dest}}</p></td>
 </tr>
 
 
@@ -117,15 +117,18 @@
 </tbody>
 </table>
 </tr>
-<tr>{{Peresadki[0][0]}}{{Peresadki[0][1]}}</tr>
+<tr style="height: 10px; text-allign:left;"><td>Время на пересадку:</td> <td>{{Peresadka[index]}}</td></tr>
 {%endfor%}
-
-        	
-
 
 
 </tbody>
+<tr><p>
+<td>Дней в пути: </td>
+<td>{{Travel_days}}</td>
+<td>Часов в пути: </td>
+<td>{{Travel_hours}}</td>
 
+</tr>
           </form>
         </div>
       </div>
