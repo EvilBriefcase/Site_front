@@ -28,7 +28,6 @@ book_tickets = json.loads(tickets_json)  # Превращение jsona  в сл
 
 
 def JSON_reading(): #Функция сохранения списка городов для выдачи выпадающим списком
-
     cities_json = book_cities["cities"] #Получсние словаря с имя_id  городов
     counter = 0
     for rows in cities_json:
@@ -37,18 +36,19 @@ def JSON_reading(): #Функция сохранения списка город
         cities_name_id.append(buffer)
 
         buffer = cities_json[counter]["cityName"];
+
         cities_name.append(buffer)
         cities_name_id.append(buffer)
 
         buffer=cities_json[counter]
         cities_full.extend(buffer)
-        counter = counter + 1
+        counter = counter + 1 #Счетчик городов
     return counter
 
 def ID_NAME(id): #функция сверки ID города и его имени
     counter=0
-    while(cities_name_id[counter]!=id):
-        counter=counter+2;
+    while(cities_name_id[counter]!=id): #Сравнение id из списка городов и id из json
+        counter=counter+2; #Так как в массиве id и имя идут рядом, то для следующего Id нужно "перешагнуть" имя
     name=cities_name_id[counter+1]
     return name
 
@@ -56,19 +56,15 @@ def ID_NAME(id): #функция сверки ID города и его имен
 
 def Minutes_To_DateTime(): #Функция пересчета времени пути в часы/минуты
     global Summary_Travel_time
-    Summary_Travel_time = datetime.datetime.strptime("0:0", "%H:%M")
-
+    Summary_Travel_time = datetime.datetime.strptime("0:0", "%H:%M") #обнуление счетчика времени в пути(часы и минуты)
 
     cities_json = book_tickets["departures"]
     TimeTravel=[]
     counter=0
 
-
-
-
     for rows in cities_json:
         buffer = cities_json[counter]["travelTime"];
-        counter=counter+1
+        counter=counter+1  #Счетчик для перехода к следующей структуре с информацией по билету
         Hours = int(buffer / 60);  # Часы
         Minutes = buffer % 60  # Минуты
 
@@ -77,7 +73,7 @@ def Minutes_To_DateTime(): #Функция пересчета времени п�
 
         Summary_Travel_time=Summary_Travel_time + datetime.timedelta(hours=buffer_date_time.hour, minutes=buffer_date_time.minute)# подсчет общего времени в пути без пересадов для этого берем нулевой формат datetime и еще получаем timedelta
 
-        TimeTravel.append((buffer_date_time.time()))
+        TimeTravel.append((buffer_date_time.time())) #оздание списка с временем поездки
     return TimeTravel
 
 def SummaryTime():
@@ -143,17 +139,16 @@ def hello():
         global Correct_date
 
         Correct_date=5
-        depart=request.form['depart']
-        destination=request.form['destination']
+        depart=request.form['depart']   #Получение из формы города отправление
+        destination=request.form['destination'] #Получение из формы города назначения
         depart_date=str((datetime.datetime.strptime(request.form['Date'], "%d.%m.%Y")).date())#считывание с формы даты отправления
 
         #Проверка введеный пользователем даты на актуальность текущей дате
         if datetime.datetime.strptime(request.form['Date'], "%d.%m.%Y").date() > datetime.datetime.now().date():
-
             Correct_date=""
             return redirect(url_for('res'))
         else:
-            Correct_date="1"
+            Correct_date="1" #
         #Конец
 
     number_of_cities=JSON_reading()
@@ -168,4 +163,3 @@ def res():
     return render_template('Подбор транспорта.html', Depart=depart, Destination=destination, info=Info,Peresadka=Peresadka, Number=Number_of_Rows, Date_Dep=depart_date, Date_Dest=last_departure_date, Travel_days=Summary_Travel_time.day, Travel_hours=Summary_Travel_time.hour)
 if __name__ == '__main__':
     app.run()
-
