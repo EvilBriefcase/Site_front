@@ -52,7 +52,14 @@ def ID_NAME(id): #функция сверки ID города и его имен
     name=cities_name_id[counter+1]
     return name
 
+#Сделать функцию превращение NAME в ID
 
+def NAME_ID(name):
+    counter = 1
+    while (cities_name_id[counter] != name):  # Сравнение id из списка городов и id из json
+        counter = counter + 2;  # Так как в массиве id и имя идут рядом, то для следующего Id нужно "перешагнуть" имя
+    id = cities_name_id[counter -1]
+    return id
 
 def Minutes_To_DateTime(): #Функция пересчета времени пути в часы/минуты
     global Summary_Travel_time
@@ -96,34 +103,37 @@ def Table_info(): #функция выборки и приведения инф�
 
 
     counter = 0
+    counter_tickets=0
     for rows in cities_json:
+        if(ID_Ticket == cities_json[counter]["id"]):
 
-        buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
+            buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
 
-        buffer_date_time = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]), "%Y-%m-%dT%H:%M:%S");
-        datetime_buffer = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]),"%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=TimeTravel[counter].hour,minutes=TimeTravel[counter].minute)  # Буффер для datetime полного времени прибытия
+            buffer_date_time = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]), "%Y-%m-%dT%H:%M:%S");
+            datetime_buffer = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]),"%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=TimeTravel[counter].hour,minutes=TimeTravel[counter].minute)  # Буффер для datetime полного времени прибытия
 
-        buffer[1] =str( buffer_date_time.date())  #Дата отправления
-        buffer[2] = str(buffer_date_time.time()); #Время отправления
+            buffer[1] =str( buffer_date_time.date())  #Дата отправления
+            buffer[2] = str(buffer_date_time.time()); #Время отправления
 
 
-        buffer[3] = datetime_buffer.date();#Дата прибытия через время в пути
-        buffer[4] = datetime_buffer.time();#Время прибытия через время в пути
+            buffer[3] = datetime_buffer.date();#Дата прибытия через время в пути
+            buffer[4] = datetime_buffer.time();#Время прибытия через время в пути
 
         #buffer[5]=cities_json[counter]["departureCity"];
-        buffer[5] = ID_NAME(int(cities_json[counter]["departureCity"]))
+            buffer[5] = ID_NAME(int(cities_json[counter]["departureCity"]))
 
-        buffer[6] = ID_NAME(int(cities_json[counter]["arrivalCity"]));
-        buffer[7] = cities_json[counter]["price"];
+            buffer[6] = ID_NAME(int(cities_json[counter]["arrivalCity"]));
+            buffer[7] = cities_json[counter]["price"];
 
-        buffer[8]=TimeTravel[counter];
-        Previous=datetime_buffer #переменная для хранения предыдущей даты прибытия
-        if counter>=1:
-            Peresadka.append((buffer_date_time - datetime.timedelta(hours=Previous.hour, minutes=Previous.minute)).time())
+            buffer[8]=TimeTravel[counter];
+            Previous=datetime_buffer #переменная для хранения предыдущей даты прибытия
+            if counter>=1:
+                Peresadka.append((buffer_date_time - datetime.timedelta(hours=Previous.hour, minutes=Previous.minute)).time())
             #Summary_Travel_time=Summary_Travel_time + datetime.timedelta(hours=Peresadka[counter-1].hour, minutes=Peresadka[counter-1].minute)
 
-        Info.extend(buffer)
-        counter = counter + 1
+            Info.extend(buffer)
+            counter_tickets=counter_tickets+1;#Счетчик билетов найденных алгоритмом
+        counter = counter + 1#Счетчик прохода по строкам
         Number_of_Rows = counter
         #Сделать for на блоки с билетами(или найти)
     #Конец попытки
@@ -141,6 +151,7 @@ def hello():
         Correct_date=5
         depart=request.form['depart']   #Получение из формы города отправление
         destination=request.form['destination'] #Получение из формы города назначения
+
         depart_date=str((datetime.datetime.strptime(request.form['Date'], "%d.%m.%Y")).date())#считывание с формы даты отправления
 
         #Проверка введеный пользователем даты на актуальность текущей дате
