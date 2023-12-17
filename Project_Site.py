@@ -3,13 +3,11 @@ import psycopg2
 import numpy
 import datetime
 import json
-
+import heapq
 
 app = Flask(__name__)
 conn=psycopg2.connect(database="postgres", user="postgres", password="1234", host="localhost", port=5432) #Вход в БД
 #json_File_read="чтото.json" #имя файла в формате json
-
-
 
 cities_name=[] #Массив Имя города
 cities_name_id=[] #Массив id_имя
@@ -20,12 +18,11 @@ with open("Test.json", "r", encoding='utf-8') as file:
     capitals_json = file.read()
 book_cities = json.loads(capitals_json)  # Превращение jsona  в словарь
 
+
 #Открытие json со списком билетов
 with open("Test.json", "r", encoding='utf-8') as file:
     tickets_json = file.read()
 book_tickets = json.loads(tickets_json)  # Превращение jsona  в словарь
-
-
 
 def JSON_reading(): #Функция сохранения списка городов для выдачи выпадающим списком
     cities_json = book_cities["cities"] #Получсние словаря с имя_id  городов
@@ -83,11 +80,7 @@ def Minutes_To_DateTime(): #Функция пересчета времени п�
         TimeTravel.append((buffer_date_time.time())) #оздание списка с временем поездки
     return TimeTravel
 
-def SummaryTime():
-    #Подсчет времени с пересадками
-    return
-
-def Table_info(): #функция выборки и приведения информации к виду удобному для чтения пользователем на экране
+def Table_info(ID_Ticket): #функция выборки и приведения информации к виду удобному для чтения пользователем на экране
     global Info #Массив всей информации о билете
     global Number_of_Rows
     global Peresadka #Массив времени на пересадку
@@ -101,43 +94,165 @@ def Table_info(): #функция выборки и приведения инф�
 
     TimeTravel=Minutes_To_DateTime(); #Время в дороге
 
-
     counter = 0
     counter_tickets=0
-    for rows in cities_json:
-        if(ID_Ticket == cities_json[counter]["id"]):
+    print(len(ID_Ticket[2]))
+    for counter_tickets in range(0,len(ID_Ticket[2]) ):
+        for rows in cities_json:
+            #print(ID_Ticket[2][counter_tickets])
+            #print(str(cities_json[counter]["id"]))
+            if(ID_Ticket[2][counter_tickets] ==  str(cities_json[counter]["id"])):
 
-            buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
+               # counter_tickets = counter_tickets + 1;  # Счетчик билетов найденных алгоритмом
 
-            buffer_date_time = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]), "%Y-%m-%dT%H:%M:%S");
-            datetime_buffer = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]),"%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=TimeTravel[counter].hour,minutes=TimeTravel[counter].minute)  # Буффер для datetime полного времени прибытия
+                buffer[0] = str(cities_json[counter]["transportType"]);#тип транспорта
 
-            buffer[1] =str( buffer_date_time.date())  #Дата отправления
-            buffer[2] = str(buffer_date_time.time()); #Время отправления
+                buffer_date_time = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]), "%Y-%m-%dT%H:%M:%S");
+                datetime_buffer = datetime.datetime.strptime(str(cities_json[counter]["departureDate"]),"%Y-%m-%dT%H:%M:%S") + datetime.timedelta(hours=TimeTravel[counter].hour,minutes=TimeTravel[counter].minute)  # Буффер для datetime полного времени прибытия
+
+                buffer[1] =str( buffer_date_time.date())  #Дата отправления
+                buffer[2] = str(buffer_date_time.time()); #Время отправления
 
 
-            buffer[3] = datetime_buffer.date();#Дата прибытия через время в пути
-            buffer[4] = datetime_buffer.time();#Время прибытия через время в пути
+                buffer[3] = datetime_buffer.date();#Дата прибытия через время в пути
+                buffer[4] = datetime_buffer.time();#Время прибытия через время в пути
 
         #buffer[5]=cities_json[counter]["departureCity"];
-            buffer[5] = ID_NAME(int(cities_json[counter]["departureCity"]))
+                buffer[5] = ID_NAME(int(cities_json[counter]["departureCity"]))
 
-            buffer[6] = ID_NAME(int(cities_json[counter]["arrivalCity"]));
-            buffer[7] = cities_json[counter]["price"];
+                buffer[6] = ID_NAME(int(cities_json[counter]["arrivalCity"]));
+                buffer[7] = cities_json[counter]["price"];
 
-            buffer[8]=TimeTravel[counter];
-            Previous=datetime_buffer #переменная для хранения предыдущей даты прибытия
-            if counter>=1:
-                Peresadka.append((buffer_date_time - datetime.timedelta(hours=Previous.hour, minutes=Previous.minute)).time())
+                buffer[8]=TimeTravel[counter];
+                Previous=datetime_buffer #переменная для хранения предыдущей даты прибытия
+                if counter>=1:
+                    Peresadka.append((buffer_date_time - datetime.timedelta(hours=Previous.hour, minutes=Previous.minute)).time())
             #Summary_Travel_time=Summary_Travel_time + datetime.timedelta(hours=Peresadka[counter-1].hour, minutes=Peresadka[counter-1].minute)
 
-            Info.extend(buffer)
-            counter_tickets=counter_tickets+1;#Счетчик билетов найденных алгоритмом
-        counter = counter + 1#Счетчик прохода по строкам
-        Number_of_Rows = counter
+                Info.extend(buffer)
+            counter = counter + 1#Счетчик прохода по строкам
+            Number_of_Rows = counter_tickets
         #Сделать for на блоки с билетами(или найти)
+        Info.reverse()
+        counter=0
     #Конец попытки
-    return Info[counter+3]
+    return Info[counter_tickets+3]
+
+#
+def find_paths(graph, tickets_info, start, end):
+    # Инициализация расстояний
+    distances = {city: float('infinity') for city in graph}
+    distances[start] = 0
+
+    # Инициализация приоритетной очереди
+    priority_queue = [(0, start)]
+
+    # Словарь для отслеживания предыдущего города на пути
+    previous_city = {city: None for city in graph}
+
+    # Словарь для отслеживания стоимости пути
+    path_cost = {city: 0 for city in graph}
+
+    # Словарь для отслеживания id билета на пути
+    path_tickets = {city: None for city in graph}
+
+    while priority_queue:
+        current_distance, current_city = heapq.heappop(priority_queue)
+        # Проверка, не посещен ли текущий город
+        if current_distance > distances[current_city]:
+            continue
+
+        # Проверка достижения конечного города
+        if current_city == end:
+            # Восстановление пути, стоимости и id билетов
+            path = []
+            total_cost = 0
+            ticket_ids = []
+            while current_city is not None:
+                path.insert(0, current_city)
+                total_cost += path_cost[current_city]
+                ticket_ids.append(path_tickets[current_city])
+                current_city = previous_city[current_city]
+            return path, total_cost, ticket_ids
+
+        # Обновление расстояний до соседних городов, если сосед существует
+        if current_city in graph:
+            for neighbor, weight, ticket_id in graph[current_city]:
+                distance = current_distance + weight
+
+                # Если найден более короткий путь, обновляем расстояние, стоимость и id билета
+                if distance < distances.get(neighbor, float('infinity')):
+                    distances[neighbor] = distance
+                    previous_city[neighbor] = current_city
+                    path_cost[neighbor] = weight
+                    path_tickets[neighbor] = ticket_id
+                    heapq.heappush(priority_queue, (distance, neighbor))
+
+    return None, 0, None
+
+
+def find_direct_route(city_connections, start_city, end_city):
+    # Проверяем, есть ли города в словаре
+    if start_city not in city_connections.keys():
+        return '-1'
+    # Ищем прямое сообщение между городами
+    connections_from_start = city_connections[start_city]
+    for connected_city, cost, id in connections_from_start:
+        if connected_city == end_city:
+            return cost
+
+    return '100000'
+
+# Функция для вычисления разницы во времени в минутах
+def calculate_time_difference(departure_date, travel_time):
+    datetime.departure_datetime = datetime.datetime.fromisoformat(departure_date)
+    datetime.arrival_datetime = datetime.departure_datetime + datetime.timedelta(minutes=travel_time)
+    return (datetime.arrival_datetime - datetime.departure_datetime).seconds // 60
+
+# Заполнение графа
+def filling_graph(data):
+    graph = {}
+    tickets_info = {}  # Добавим словарь для хранения информации о билетах
+
+    for departure in data['departures']:
+        departure_city = str(departure['departureCity'])
+        arrival_city = str(departure['arrivalCity'])
+
+        time_difference = calculate_time_difference(departure['departureDate'], departure['travelTime'])
+
+        if departure_city not in graph:
+            graph[departure_city] = []
+        graph[departure_city].append((arrival_city, int(time_difference), departure['id']))  # Добавляем id билета
+        tickets_info[departure['id']] = {
+            'transportType': departure['transportType'],
+            'departureDate': departure['departureDate'],
+            'travelTime': departure['travelTime'],
+            'price': departure['price']
+        }
+
+    return graph, tickets_info
+
+def Algotitm(source, destination):
+    with open('test.json', 'r') as fp:
+        data = json.load(fp)
+    graph, tickets_info = filling_graph(data)
+
+   # source = '30'
+  #  destination = '35'
+
+    eta = find_direct_route(graph, source, destination)  # Эталонное время
+
+  #  print('Время прямого пути', eta)
+
+    result = find_paths(graph, tickets_info, source, destination)
+    print(result)
+
+    if result:
+        return result
+        #print('Путь', '->'.join(result[0]), 'Время в пути ', result[1])
+    else:
+        return (-1)
+#
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -167,10 +282,10 @@ def hello():
 
 @app.route('/res', methods=['GET', 'POST'])
 def res():
-
+   # print(Algotitm(NAME_ID(depart), NAME_ID(destination))[2][1])
     #Выбор из таблицы нужных строк
-    last_departure_date=Table_info() #Получение последней даты прибытия из билета для показания даты прибытия в общем
-
+    last_departure_date=Table_info(Algotitm(str(NAME_ID(depart)), str(NAME_ID(destination)))) #Получение последней даты прибытия из билета для показания даты прибытия в общем
     return render_template('Подбор транспорта.html', Depart=depart, Destination=destination, info=Info,Peresadka=Peresadka, Number=Number_of_Rows, Date_Dep=depart_date, Date_Dest=last_departure_date, Travel_days=Summary_Travel_time.day, Travel_hours=Summary_Travel_time.hour)
+
 if __name__ == '__main__':
     app.run()
