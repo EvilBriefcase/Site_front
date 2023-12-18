@@ -96,7 +96,6 @@ def Table_info(ID_Ticket): #функция выборки и приведени�
 
     counter = 0
     counter_tickets=0
-    print(len(ID_Ticket[2]))
     for counter_tickets in range(0,len(ID_Ticket[2]) ):
         for rows in cities_json:
             #print(ID_Ticket[2][counter_tickets])
@@ -133,10 +132,10 @@ def Table_info(ID_Ticket): #функция выборки и приведени�
             counter = counter + 1#Счетчик прохода по строкам
             Number_of_Rows = counter_tickets
         #Сделать for на блоки с билетами(или найти)
-        Info.reverse()
+
         counter=0
     #Конец попытки
-    return Info[counter_tickets+3]
+    return Info[counter_tickets+2]
 
 #
 def find_paths(graph, tickets_info, start, end):
@@ -237,14 +236,13 @@ def Algotitm(source, destination):
         data = json.load(fp)
     graph, tickets_info = filling_graph(data)
 
-   # source = '30'
-  #  destination = '35'
 
     eta = find_direct_route(graph, source, destination)  # Эталонное время
 
   #  print('Время прямого пути', eta)
 
     result = find_paths(graph, tickets_info, source, destination)
+    result[2].reverse()
     print(result)
 
     if result:
@@ -285,6 +283,9 @@ def res():
    # print(Algotitm(NAME_ID(depart), NAME_ID(destination))[2][1])
     #Выбор из таблицы нужных строк
     last_departure_date=Table_info(Algotitm(str(NAME_ID(depart)), str(NAME_ID(destination)))) #Получение последней даты прибытия из билета для показания даты прибытия в общем
+    if(last_departure_date==-1):
+        return redirect(url_for(''))
+    #print(last_departure_date)
     return render_template('Подбор транспорта.html', Depart=depart, Destination=destination, info=Info,Peresadka=Peresadka, Number=Number_of_Rows, Date_Dep=depart_date, Date_Dest=last_departure_date, Travel_days=Summary_Travel_time.day, Travel_hours=Summary_Travel_time.hour)
 
 if __name__ == '__main__':
